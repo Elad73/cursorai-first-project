@@ -1,0 +1,28 @@
+.add-expense {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.add-expense form {
+  display: flex;
+  flex-direction: column;
+}
+
+.add-expense input,
+.add-expense select,
+.add-expense button {
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+.add-expense button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.add-expense button:hover {
+  background-color: #45a049;
+}
