@@ -12,19 +12,21 @@ router.post('/', async (req, res) => {
   }
 });
 
+// GET route to fetch all expenses
 router.get('/', async (req, res) => {
   try {
-    const { view } = req.query;
-    let startDate = new Date();
-    if (view === 'week') {
-      startDate.setDate(startDate.getDate() - 7);
-    } else if (view === 'month') {
-      startDate.setMonth(startDate.getMonth() - 1);
-    }
-    const expenses = await Expense.find({ date: { $gte: startDate } }).sort('date');
+    console.log('Attempting to fetch expenses');
+    
+    // Remove date filtering for now
+    const expenses = await Expense.find({}).sort('date');
+    
+    console.log('Number of expenses found:', expenses.length);
+    console.log('Expenses:', JSON.stringify(expenses, null, 2));
+    
     res.json(expenses);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error('Error fetching expenses:', error);
+    res.status(500).json({ message: error.message, stack: error.stack });
   }
 });
 
