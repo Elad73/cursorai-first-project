@@ -1,28 +1,47 @@
-.add-expense {
-  max-width: 500px;
-  margin: 0 auto;
-  padding: 20px;
+.add-expense-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding-top: 80px; /* Adjust this value to match your navbar height */
+  box-sizing: border-box;
 }
 
-.add-expense form {
+.add-expense-form {
+  background-color: #f0f0f0;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+.add-expense-form h2 {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.add-expense-form form {
   display: flex;
   flex-direction: column;
 }
 
-.add-expense input,
-.add-expense select,
-.add-expense button {
-  margin-bottom: 10px;
-  padding: 10px;
+.add-expense-form input,
+.add-expense-form select,
+.add-expense-form button {
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  font-size: 1rem;
 }
 
-.add-expense button {
+.add-expense-form button {
   background-color: #4CAF50;
   color: white;
   border: none;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.add-expense button:hover {
+.add-expense-form button:hover {
   background-color: #45a049;
 }
