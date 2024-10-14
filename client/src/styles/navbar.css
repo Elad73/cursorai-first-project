@@ -1,5 +1,6 @@
 .navbar {
-  background-color: rgba(0, 0, 0, 0.7);
+  /* background-color: rgba(0, 0, 0, 0.7); */
+  background-color: rgba(42, 75, 34, 0.7);
   height: 80px;
   display: flex;
   justify-content: center;
@@ -21,7 +22,7 @@
 }
 
 .navbar-logo {
-  color: #fff;
+  color: #D1D89F;
   text-decoration: none;
   font-size: 2rem;
   font-weight: bold;
@@ -39,7 +40,7 @@
 }
 
 .nav-link {
-  color: #fff;
+  color: #E4E7BC;
   text-decoration: none;
   padding: 0.5rem 1rem;
   transition: all 0.3s ease;

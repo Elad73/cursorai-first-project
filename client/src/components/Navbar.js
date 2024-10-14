@@ -20,17 +20,14 @@ function Navbar() {
                   <span></span>
                   <span></span>
               </div>
-              <ul className={`nav-menu ${isOpen ? 'active' : ''}`}>
-              <li className="nav-item">
-            <Link to="/" className="nav-link" onClick={() => setIsOpen(false)}>Home</Link>
-          </li>
+        <ul className={`nav-menu ${isOpen ? 'active' : ''}`}>
           <li className="nav-item">
             <Link to="/add-expense" className="nav-link" onClick={() => setIsOpen(false)}>Add Expense</Link>
           </li>
           <li className="nav-item">
             <Link to="/view-expenses" className="nav-link" onClick={() => setIsOpen(false)}>View Expenses</Link>
           </li>
-              </ul>
+        </ul>
       </div>
     </nav>
   );
