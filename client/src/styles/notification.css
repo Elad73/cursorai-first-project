@@ -1,0 +1,63 @@
+.notification {
+  position: fixed;
+  top: 80px; /* Adjust this value to match your navbar height */
+  right: 20px;
+  padding: 15px 20px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 300px;
+  max-width: calc(100% - 40px); /* Ensure it doesn't overflow on small screens */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  animation: slideIn 0.3s ease-out;
+  z-index: 1000; /* Ensure it's above other content */
+}
+
+.notification p {
+  margin: 0;
+  font-size: 16px;
+  flex-grow: 1;
+  padding-right: 15px;
+}
+
+.notification button {
+  background: none;
+  border: none;
+  color: inherit;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+.notification.success {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.notification.error {
+  background-color: #f44336;
+  color: white;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Media query for smaller screens */
+@media (max-width: 600px) {
+  .notification {
+    top: 60px; /* Adjust if your navbar is smaller on mobile */
+    right: 10px;
+    left: 10px;
+    max-width: none;
+  }
+}

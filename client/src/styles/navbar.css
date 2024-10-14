@@ -9,7 +9,7 @@
   position: fixed;
   top: 0;
   width: 100%;
-  z-index: 999;
+  z-index: 999; /* Ensure this is lower than the notification's z-index */
 }
 
 .navbar-container {
