@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 import api from '../utils/api';
 import '../styles/viewExpenses.css';
 
@@ -11,7 +12,8 @@ ChartJS.register(
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  ChartDataLabels
 );
 
 function ViewExpenses() {
@@ -45,7 +47,7 @@ function ViewExpenses() {
       labels,
       datasets: [
         {
-          label: 'Expenses',
+          label: 'Expenses (NIS)',
           data,
           backgroundColor: 'rgba(75, 192, 192, 0.6)',
         },
@@ -68,7 +70,12 @@ function ViewExpenses() {
         type: 'linear',
         title: {
           display: true,
-          text: 'Amount ($)'
+          text: 'Amount (NIS)'
+        },
+        ticks: {
+          callback: function(value, index, values) {
+            return '₪' + value.toLocaleString('he-IL');
+          }
         }
       },
     },
@@ -78,8 +85,30 @@ function ViewExpenses() {
       },
       title: {
         display: true,
-        text: 'Expense Chart by Category',
+        text: 'Expense Chart by Category (NIS)',
       },
+      tooltip: {
+        callbacks: {
+          label: function(context) {
+            let label = context.dataset.label || '';
+            if (label) {
+              label += ': ';
+            }
+            if (context.parsed.y !== null) {
+              label += '₪' + context.parsed.y.toLocaleString('he-IL');
+            }
+            return label;
+          }
+        }
+      },
+      datalabels: {
+        anchor: 'end',
+        align: 'top',
+        formatter: (value) => '₪' + value.toLocaleString('he-IL'),
+        font: {
+          weight: 'bold'
+        }
+      }
     },
   };
 
@@ -89,7 +118,10 @@ function ViewExpenses() {
       <div className="chart-wrapper">
         <div className="chart-container">
           {chartData ? (
-            <Bar data={chartData} options={chartOptions} />
+            <Bar 
+              data={chartData} 
+              options={chartOptions}
+            />
           ) : (
             <p>Loading chart data...</p>
           )}
