@@ -1,44 +1,99 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { Line } from 'react-chartjs-2';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+import { Bar } from 'react-chartjs-2';
+import api from '../utils/api';
 import '../styles/viewExpenses.css';
+
+// Register the scales and elements
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 function ViewExpenses() {
   const [expenses, setExpenses] = useState([]);
-  const [viewMode, setViewMode] = useState('week');
+  const [chartData, setChartData] = useState(null);
 
   useEffect(() => {
     fetchExpenses();
-  }, [viewMode]);
+  }, []);
 
   const fetchExpenses = async () => {
     try {
-      const response = await axios.get(`/api/expenses?view=${viewMode}`);
+      const response = await api.get('/expenses');
       setExpenses(response.data);
+      prepareChartData(response.data);
     } catch (error) {
       console.error('Error fetching expenses:', error);
     }
   };
 
-  const chartData = {
-    labels: expenses.map(exp => exp.date),
-    datasets: [{
-      label: 'Expenses',
-      data: expenses.map(exp => exp.amount),
-      borderColor: 'rgba(75, 192, 192, 1)',
-      tension: 0.1
-    }]
+  const prepareChartData = (expensesData) => {
+    const categoryTotals = expensesData.reduce((acc, expense) => {
+      acc[expense.category] = (acc[expense.category] || 0) + expense.amount;
+      return acc;
+    }, {});
+
+    const labels = Object.keys(categoryTotals);
+    const data = Object.values(categoryTotals);
+
+    setChartData({
+      labels,
+      datasets: [
+        {
+          label: 'Expenses',
+          data,
+          backgroundColor: 'rgba(75, 192, 192, 0.6)',
+        },
+      ],
+    });
+  };
+
+  const chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      x: {
+        type: 'category',
+        title: {
+          display: true,
+          text: 'Categories'
+        }
+      },
+      y: {
+        type: 'linear',
+        title: {
+          display: true,
+          text: 'Amount ($)'
+        }
+      },
+    },
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: 'Expense Chart by Category',
+      },
+    },
   };
 
   return (
-    <div className="view-expenses">
-      <h2>Expense Overview</h2>
-      <div className="view-toggle">
-        <button onClick={() => setViewMode('week')} className={viewMode === 'week' ? 'active' : ''}>Week</button>
-        <button onClick={() => setViewMode('month')} className={viewMode === 'month' ? 'active' : ''}>Month</button>
-      </div>
-      <div className="chart-container">
-        <Line data={chartData} />
+    <div className="view-expenses-container">
+      <h2>Expense Chart</h2>
+      <div className="chart-wrapper">
+        <div className="chart-container">
+          {chartData ? (
+            <Bar data={chartData} options={chartOptions} />
+          ) : (
+            <p>Loading chart data...</p>
+          )}
+        </div>
       </div>
     </div>
   );
