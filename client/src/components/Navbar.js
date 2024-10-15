@@ -14,18 +14,21 @@ function Navbar() {
       <div className="navbar-container">
         <Link to="/" className="navbar-logo">
           BudgetMaster
-              </Link>
-              <div className={`menu-icon ${isOpen ? 'open' : ''}`} onClick={toggleMenu}>
-                  <span></span>
-                  <span></span>
-                  <span></span>
-              </div>
+        </Link>
+        <div className={`menu-icon ${isOpen ? 'open' : ''}`} onClick={toggleMenu}>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
         <ul className={`nav-menu ${isOpen ? 'active' : ''}`}>
           <li className="nav-item">
             <Link to="/add-expense" className="nav-link" onClick={() => setIsOpen(false)}>Add Expense</Link>
           </li>
           <li className="nav-item">
             <Link to="/view-expenses" className="nav-link" onClick={() => setIsOpen(false)}>View Expenses</Link>
+          </li>
+          <li className="nav-item">
+            <Link to="/settings" className="nav-link" onClick={() => setIsOpen(false)}>Settings</Link>
           </li>
         </ul>
       </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import api from '../utils/api';
 import '../styles/addExpense.css';
 import Notification from '../components/Notification';
@@ -6,7 +6,22 @@ import Notification from '../components/Notification';
 
 function AddExpense() {
   const [expense, setExpense] = useState({ amount: '', description: '', category: '', tags: '' });
+  const [categories, setCategories] = useState([]);
   const [notification, setNotification] = useState(null);
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  const fetchCategories = async () => {
+    try {
+      const response = await api.get('/categories');
+      setCategories(response.data);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+      setNotification({ message: 'Failed to fetch categories. Please try again.', type: 'error' });
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
