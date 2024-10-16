@@ -16,7 +16,9 @@ function AddExpense() {
   const fetchCategories = async () => {
     try {
       const response = await api.get('/categories');
-      setCategories(response.data);
+      // Sort categories by priority in descending order
+      const sortedCategories = response.data.sort((a, b) => a.priority - b.priority);
+      setCategories(sortedCategories);
     } catch (error) {
       console.error('Error fetching categories:', error);
       setNotification({ message: 'Failed to fetch categories. Please try again.', type: 'error' });
@@ -68,10 +70,11 @@ function AddExpense() {
             required
           >
             <option value="">Select Category</option>
-            <option value="food">Food</option>
-            <option value="transport">Transport</option>
-            <option value="utilities">Utilities</option>
-            {/* Add more categories as needed */}
+            {categories.map((category) => (
+              <option key={category._id} value={category._id}>
+                {category.name}
+              </option>
+            ))}
           </select>
           <input
             type="text"

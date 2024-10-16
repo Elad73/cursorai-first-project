@@ -6,7 +6,7 @@ import { FaPlus, FaTrash, FaPencilAlt } from 'react-icons/fa';
 
 function Settings() {
   const [categories, setCategories] = useState([]);
-  const [newCategory, setNewCategory] = useState({ name: '', description: '', color: '#000000' });
+  const [newCategory, setNewCategory] = useState({ name: '', description: '', color: '#000000', priority: 1 });
   const [notification, setNotification] = useState(null);
   const [activeSection, setActiveSection] = useState('account');
 
@@ -28,8 +28,9 @@ function Settings() {
   const fetchCategories = async () => {
     try {
       const response = await api.get('/categories');
-      console.log('Fetched categories:', response.data);
-      setCategories(response.data);
+      const sortedCategories = response.data.sort((a, b) => a.priority - b.priority);
+      setCategories(sortedCategories);
+      updateNewCategoryPriority(sortedCategories);
     } catch (error) {
       console.error('Error fetching categories:', error.response || error);
       setNotification({ 
@@ -39,14 +40,24 @@ function Settings() {
     }
   };
 
+  const updateNewCategoryPriority = (categoriesList) => {
+    const maxPriority = categoriesList.reduce((max, category) => Math.max(max, category.priority), 0);
+    setNewCategory(prev => ({ ...prev, priority: maxPriority + 1 }));
+  };
+
   const handleAddCategory = async (e) => {
     e.preventDefault();
     try {
       const response = await api.post('/categories', newCategory);
       console.log('Response:', response);
-      setNewCategory({ name: '', description: '', color: '#000000' });
       setNotification({ message: 'Category added successfully!', type: 'success' });
-      fetchCategories();
+      
+      // Update the categories list with the new category
+      const updatedCategories = [...categories, response.data].sort((a, b) => a.priority - b.priority);
+      setCategories(updatedCategories);
+      
+      // Reset the form and update the new category priority
+      setNewCategory({ name: '', description: '', color: '#000000', priority: response.data.priority + 1 });
     } catch (error) {
       console.error('Error adding category:', error.response || error);
       setNotification({ 
@@ -237,7 +248,7 @@ function Settings() {
                 type="text"
                 value={newCategory.description}
                 onChange={(e) => setNewCategory({...newCategory, description: e.target.value})}
-                placeholder="Category description"
+                placeholder="Description"
               />
               <input
                 type="color"
@@ -245,8 +256,16 @@ function Settings() {
                 onChange={(e) => setNewCategory({...newCategory, color: e.target.value})}
                 required
               />
+              <input
+                type="number"
+                value={newCategory.priority}
+                onChange={(e) => setNewCategory({...newCategory, priority: parseInt(e.target.value)})}
+                placeholder="Priority"
+                min="1"
+                required
+              />
               <button type="submit" className="add-category-btn">
-                <FaPlus /> Add Category
+                <FaPlus /> Add
               </button>
             </form>
             <ul className="category-list">
@@ -255,6 +274,7 @@ function Settings() {
                   <div className="category-info">
                     <span className="category-name">{category.name}</span>
                     <span className="category-description">{category.description}</span>
+                    <span className="category-priority">Priority: {category.priority}</span>
                   </div>
                   <div className="category-actions">
                     <button className="edit-category-btn">
