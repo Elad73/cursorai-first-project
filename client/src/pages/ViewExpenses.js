@@ -38,13 +38,11 @@ function ViewExpenses() {
   const fetchCategories = async () => {
     try {
       const response = await api.get('/categories');
-      console.log('Raw categories data:', response.data);
       const categoryMap = {};
       response.data.forEach(category => {
-        categoryMap[category._id] = category.name;
+        categoryMap[category._id] = { name: category.name, color: category.color };
       });
       setCategories(categoryMap);
-      console.log('Processed categories:', categoryMap);
     } catch (error) {
       console.error('Error fetching categories:', error);
     }
@@ -61,20 +59,22 @@ function ViewExpenses() {
   };
 
   const prepareChartData = (expensesData) => {
-    console.log('Categories when preparing chart:', categories);
-    console.log('Expenses when preparing chart:', expensesData);
-    
-    const categoryTotals = expensesData.reduce((acc, expense) => {
-      const categoryName = categories[expense.category] || 'Unknown';
-      console.log(`Expense category: ${expense.category}, Mapped name: ${categoryName}`);
-      acc[categoryName] = (acc[categoryName] || 0) + expense.amount;
-      return acc;
-    }, {});
+    const categoryTotals = {};
+    const categoryColors = {};
 
-    console.log('Final category totals:', categoryTotals);
+    expensesData.forEach(expense => {
+      const category = categories[expense.category] || { name: 'Unknown', color: '#808080' };
+      const categoryName = category.name;
+      if (!categoryTotals[categoryName]) {
+        categoryTotals[categoryName] = 0;
+        categoryColors[categoryName] = category.color;
+      }
+      categoryTotals[categoryName] += expense.amount;
+    });
 
     const labels = Object.keys(categoryTotals);
     const data = Object.values(categoryTotals);
+    const backgroundColor = labels.map(label => categoryColors[label]);
 
     setChartData({
       labels,
@@ -82,7 +82,7 @@ function ViewExpenses() {
         {
           label: 'Expenses (NIS)',
           data,
-          backgroundColor: 'rgba(75, 192, 192, 0.6)',
+          backgroundColor,
         },
       ],
     });
@@ -114,7 +114,7 @@ function ViewExpenses() {
     },
     plugins: {
       legend: {
-        position: 'top',
+        display: false, // Hide the legend since each bar has a unique color
       },
       title: {
         display: true,
@@ -140,7 +140,8 @@ function ViewExpenses() {
         formatter: (value) => '₪' + value.toLocaleString('he-IL'),
         font: {
           weight: 'bold'
-        }
+        },
+        color: 'black', // Ensure label text is visible on all background colors
       }
     },
   };
