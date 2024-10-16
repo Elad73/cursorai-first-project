@@ -19,26 +19,59 @@ ChartJS.register(
 function ViewExpenses() {
   const [expenses, setExpenses] = useState([]);
   const [chartData, setChartData] = useState(null);
+  const [categories, setCategories] = useState({});
 
   useEffect(() => {
-    fetchExpenses();
+    const fetchData = async () => {
+      await fetchCategories();
+      await fetchExpenses();
+    };
+    fetchData();
   }, []);
+
+  useEffect(() => {
+    if (expenses.length > 0 && Object.keys(categories).length > 0) {
+      prepareChartData(expenses);
+    }
+  }, [expenses, categories]);
+
+  const fetchCategories = async () => {
+    try {
+      const response = await api.get('/categories');
+      console.log('Raw categories data:', response.data);
+      const categoryMap = {};
+      response.data.forEach(category => {
+        categoryMap[category._id] = category.name;
+      });
+      setCategories(categoryMap);
+      console.log('Processed categories:', categoryMap);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+  };
 
   const fetchExpenses = async () => {
     try {
       const response = await api.get('/expenses');
+      console.log('Raw expenses data:', response.data);
       setExpenses(response.data);
-      prepareChartData(response.data);
     } catch (error) {
       console.error('Error fetching expenses:', error);
     }
   };
 
   const prepareChartData = (expensesData) => {
+    console.log('Categories when preparing chart:', categories);
+    console.log('Expenses when preparing chart:', expensesData);
+    
     const categoryTotals = expensesData.reduce((acc, expense) => {
-      acc[expense.category] = (acc[expense.category] || 0) + expense.amount;
+      const categoryName = categories[expense.category] || 'Unknown';
+      console.log(`Expense category: ${expense.category}, Mapped name: ${categoryName}`);
+      acc[categoryName] = (acc[categoryName] || 0) + expense.amount;
       return acc;
     }, {});
+
+    console.log('Final category totals:', categoryTotals);
 
     const labels = Object.keys(categoryTotals);
     const data = Object.values(categoryTotals);
