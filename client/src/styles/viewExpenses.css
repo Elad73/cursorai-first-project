@@ -1,37 +1,73 @@
 .view-expenses-container {
+  padding: 24px;
+  margin-top: 64px; /* Adjust based on your navbar height */
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  padding-top: 80px; /* Adjust this value to match your navbar height */
-  padding-bottom: 20px; /* Add some bottom padding for spacing */
-  box-sizing: border-box;
+  background-color: #f0f2f5;
+  min-height: calc(100vh - 64px);
+}
+
+.view-expenses-title {
+  color: #1a3353;
+  margin-bottom: 24px;
+}
+
+.expenses-table-wrapper {
+  width: 80%;
   max-width: 1200px;
-  margin: 0 auto;
-  padding-left: 20px;
-  padding-right: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
 }
 
-h2 {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.chart-wrapper {
+.expenses-table {
   width: 100%;
-  display: flex;
-  justify-content: center;
 }
 
-.chart-container {
-  height: 400px; /* Adjust this value as needed */
-  width: 100%;
-  max-width: 800px; /* Adjust this value to control the maximum width of the chart */
+.expenses-table .ant-table-thead > tr > th {
+  background-color: #1a3353;
+  color: white;
 }
 
-@media (max-width: 768px) {
-  .chart-container {
-    height: 300px; /* Smaller height for mobile devices */
-  }
+.expenses-table .ant-table-tbody > tr > td {
+  padding: 16px 24px;
 }
+
+.expenses-table .ant-table-tbody > tr:hover > td {
+  background-color: #e6f7ff;
+}
+
+.expenses-table .ant-table-tbody > tr.editable-row > td {
+  background-color: #e6f7ff;
+}
+
+.action-button {
+  margin-right: 8px;
+}
+
+.edit-button {
+  color: #1890ff;
+  background-color: #e6f7ff;
+  border-color: #1890ff;
+}
+
+.delete-button {
+  color: #ff4d4f;
+  background-color: #fff1f0;
+  border-color: #ff4d4f;
+}
+
+.save-button {
+  color: #52c41a;
+  background-color: #f6ffed;
+  border-color: #52c41a;
+}
+
+.cancel-button {
+  color: #faad14;
+  background-color: #fffbe6;
+  border-color: #faad14;
+}
+

@@ -28,6 +28,9 @@ function Navbar() {
             <Link to="/view-expenses" className="nav-link" onClick={() => setIsOpen(false)}>View Expenses</Link>
           </li>
           <li className="nav-item">
+            <Link to="/reports" className="nav-link" onClick={() => setIsOpen(false)}>Reports</Link>
+          </li>
+          <li className="nav-item">
             <Link to="/settings" className="nav-link" onClick={() => setIsOpen(false)}>Settings</Link>
           </li>
         </ul>

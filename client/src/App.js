@@ -4,6 +4,7 @@ import './styles/global.css';
 import Home from './pages/Home';
 import AddExpense from './pages/AddExpense';
 import ViewExpenses from './pages/ViewExpenses';
+import Reports from './pages/Reports';
 import Settings from './pages/Settings';
 import Navbar from './components/Navbar';
 
@@ -16,6 +17,7 @@ function App() {
           <Route path="/" element={<Home subtitle="Your personal finance tracker" />} />
           <Route path="/add-expense" element={<AddExpense />} />
           <Route path="/view-expenses" element={<ViewExpenses />} />
+          <Route path="/reports" element={<Reports />} />
           <Route path="/settings" element={<Settings />} />
         </Routes>
       </div>
