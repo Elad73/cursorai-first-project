@@ -185,6 +185,7 @@ const ViewExpenses = () => {
     {
       title: 'Actions',
       dataIndex: 'actions',
+      width: '10%',
       render: (_, record) => {
         const editable = isEditing(record);
         return editable ? (
@@ -193,13 +194,10 @@ const ViewExpenses = () => {
               icon={<FiSave />}
               onClick={() => save(record.id)}
               className="action-button save-button"
-            >
-              Save
-            </Button>
+              style={{ marginRight: 8 }}
+            />
             <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-              <Button icon={<FiX />} className="action-button cancel-button">
-                Cancel
-              </Button>
+              <Button icon={<FiX />} className="action-button cancel-button" />
             </Popconfirm>
           </span>
         ) : (
@@ -209,17 +207,14 @@ const ViewExpenses = () => {
               onClick={() => edit(record)}
               disabled={editingKey !== ''}
               className="action-button edit-button"
-            >
-              Edit
-            </Button>
+              style={{ marginRight: 8 }}
+            />
             <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.id)}>
               <Button
                 icon={<FiTrash2 />}
                 disabled={editingKey !== ''}
                 className="action-button delete-button"
-              >
-                Delete
-              </Button>
+              />
             </Popconfirm>
           </span>
         );

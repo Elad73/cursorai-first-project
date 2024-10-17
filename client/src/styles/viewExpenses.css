@@ -45,6 +45,8 @@
 
 .action-button {
   margin-right: 8px;
+  padding: 4px 8px;
+  font-size: 16px;
 }
 
 .edit-button {
@@ -71,3 +73,12 @@
   border-color: #faad14;
 }
 
+.expenses-table .ant-table-tbody > tr > td:last-child {
+  text-align: center;
+}
+
+.expenses-table .ant-table-tbody > tr > td:last-child > span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
