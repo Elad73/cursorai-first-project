@@ -141,7 +141,7 @@ const ViewExpenses = () => {
 
   const columns = [
     {
-      title: 'Date',
+      title: 'Created At',
       dataIndex: 'createdAt',
       width: '15%',
       render: (text) => {
