@@ -85,6 +85,7 @@ const ViewExpenses = () => {
     try {
       const response = await api.get('/expenses');
       if (response.status === 200 && response.data) {
+        console.log('Raw expenses data:', response.data);
         setExpenses(response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
       } else {
         throw new Error('Unexpected response from server');
@@ -144,10 +145,21 @@ const ViewExpenses = () => {
       dataIndex: 'createdAt',
       width: '15%',
       render: (text) => {
+        if (!text) return 'Invalid Date';
         const date = new Date(text);
-        return date instanceof Date && !isNaN(date.getTime()) 
-          ? date.toLocaleDateString()
-          : 'Invalid Date';
+        // Check if the date is valid and not NaN
+        if (isNaN(date.getTime())) {
+          console.error('Invalid date:', text);
+          return 'Invalid Date';
+        }
+        // Use toLocaleString for a more detailed date and time format
+        return date.toLocaleString('en-US', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+        });
       },
     },
     {
