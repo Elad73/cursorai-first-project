@@ -1,5 +1,6 @@
 const express = require('express');
 const connectDB = require('./db');
+const authRoutes = require('./routes/auth');
 const expensesRouter = require('./routes/expenses');
 const categoryRoutes = require('./routes/categories');
 const cors = require('cors');
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use(cors());
 
 // Routes
+app.use('/api', authRoutes);
 app.use('/api/expenses', expensesRouter);
 app.use('/api/categories', categoryRoutes);
 
